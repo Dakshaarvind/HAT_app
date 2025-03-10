@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { auth } from '../firebase/config';
+import { auth, isFirebaseConfigured } from '../firebase/config';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -41,6 +41,26 @@ const Login = () => {
       setLoading(false);
     }
   };
+
+  // If Firebase is not configured, show a service coming soon message
+  if (!isFirebaseConfigured) {
+    return (
+      <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="px-6 py-8 text-center">
+          <svg className="mx-auto h-16 w-16 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <h2 className="mt-4 text-2xl font-bold text-gray-800">Authentication Service Coming Soon</h2>
+          <p className="mt-2 text-gray-600">
+            Our authentication service is currently under development. Please check back later.
+          </p>
+          <Link to="/" className="mt-6 inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md">
+            Return to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">

@@ -5,7 +5,8 @@ import { Elements, CardElement, useStripe, useElements } from '@stripe/react-str
 import { doc, setDoc, collection } from 'firebase/firestore';
 import { db, auth } from '../firebase/config';
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+// Check if Stripe key exists, otherwise set to null
+const stripePromise = null;
 
 const CheckoutForm = ({ items, total }) => {
   const stripe = useStripe();
@@ -106,6 +107,7 @@ const Checkout = () => {
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
+  const [isStripeAvailable, setIsStripeAvailable] = useState(!!process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
   useEffect(() => {
     if (!location.state?.items) {
@@ -126,6 +128,23 @@ const Checkout = () => {
   if (!items.length) {
     return null;
   }
+
+  // Service unavailable message component
+  const ServiceUnavailableMessage = () => (
+    <div className="bg-white rounded-lg shadow-md p-6 text-center">
+      <h2 className="text-xl font-bold mb-4">Payment Service Coming Soon</h2>
+      <p className="text-gray-600 mb-4">
+        Our payment processing service is currently under maintenance. 
+        Please check back later to complete your purchase.
+      </p>
+      <button
+        onClick={() => navigate('/')}
+        className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-md transition-colors"
+      >
+        Return to Shopping
+      </button>
+    </div>
+  );
 
   return (
     <div className="max-w-6xl mx-auto p-4">
@@ -158,11 +177,15 @@ const Checkout = () => {
           </div>
         </div>
 
-        {/* Payment Form */}
+        {/* Payment Form or Service Unavailable Message */}
         <div className="lg:col-span-2">
-          <Elements stripe={stripePromise}>
-            <CheckoutForm items={items} total={total} />
-          </Elements>
+          {isStripeAvailable && stripePromise ? (
+            <Elements stripe={stripePromise}>
+              <CheckoutForm items={items} total={total} />
+            </Elements>
+          ) : (
+            <ServiceUnavailableMessage />
+          )}
         </div>
       </div>
     </div>

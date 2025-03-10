@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
-import { auth, db } from '../firebase/config';
+import { auth, db, isFirebaseConfigured } from '../firebase/config';
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -90,6 +90,26 @@ const Signup = () => {
       setLoading(false);
     }
   };
+
+  // If Firebase is not configured, show a service coming soon message
+  if (!isFirebaseConfigured) {
+    return (
+      <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="px-6 py-8 text-center">
+          <svg className="mx-auto h-16 w-16 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <h2 className="mt-4 text-2xl font-bold text-gray-800">Registration Service Coming Soon</h2>
+          <p className="mt-2 text-gray-600">
+            Our account registration service is currently under development. Please check back later.
+          </p>
+          <Link to="/" className="mt-6 inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md">
+            Return to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
@@ -206,18 +226,6 @@ const Signup = () => {
           </svg>
           Sign up with Google
         </button>
-        
-        <p className="text-xs text-gray-500 text-center mt-4">
-          By signing up, you agree to our{' '}
-          <Link to="/terms-of-service" className="text-purple-600 hover:text-purple-500">
-            Terms of Service
-          </Link>{' '}
-          and{' '}
-          <Link to="/privacy-policy" className="text-purple-600 hover:text-purple-500">
-            Privacy Policy
-          </Link>
-          .
-        </p>
       </div>
       
       <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
