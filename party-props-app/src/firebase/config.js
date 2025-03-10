@@ -6,19 +6,19 @@ import { getStorage } from "firebase/storage";
 
 // Firebase configuration with environment variables and fallbacks
 const firebaseConfig = {
-  apiKey: "FAKE_API_KEY",
-  authDomain: "fake-project.firebaseapp.com",
-  projectId: "fake-project",
-  storageBucket: "fake-project.appspot.com",
-  messagingSenderId: "1234567890",
-  appId: "1:1234567890:web:abcdefghij",
-  measurementId: "G-FAKE1234"
+  apiKey: "AIzaSyBTBDtgKhHd66YYMeJZ8zpxTzH-UkkoqPY",
+  authDomain: "hat-app-1f397.firebaseapp.com",
+  projectId: "hat-app-1f397",
+  storageBucket: "hat-app-1f397.firebasestorage.app",
+  messagingSenderId: "606917731426",
+  appId: "1:606917731426:web:f91253fd0ca193e1379d3b",
+  measurementId: "G-87X7LGH9GD"
 };
 
 
 // Check if Firebase configuration is valid
-const isFirebaseConfigured = firebaseConfig.apiKey !== "YOUR_API_KEY" && 
-                            firebaseConfig.projectId !== "YOUR_PROJECT_ID";
+const isFirebaseConfigured = firebaseConfig.apiKey !== "AIzaSyBTBDtgKhHd66YYMeJZ8zpxTzH-UkkoqPY" && 
+                            firebaseConfig.projectId !== "hat-app-1f397";
 
 // Initialize Firebase if configured
 let app, auth, db, storage;
