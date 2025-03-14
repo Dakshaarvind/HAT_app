@@ -17,8 +17,7 @@ const firebaseConfig = {
 
 
 // Check if Firebase configuration is valid
-const isFirebaseConfigured = firebaseConfig.apiKey !== "AIzaSyBTBDtgKhHd66YYMeJZ8zpxTzH-UkkoqPY" && 
-                            firebaseConfig.projectId !== "hat-app-1f397";
+const isFirebaseConfigured = !!firebaseConfig.apiKey && !!firebaseConfig.projectId;
 
 // Initialize Firebase if configured
 let app, auth, db, storage;
@@ -29,6 +28,7 @@ try {
     auth = getAuth(app);
     db = getFirestore(app);
     storage = getStorage(app);
+    console.log("Firebase initialized successfully");
   } else {
     console.warn("Firebase configuration is missing. Firebase services will be unavailable.");
     // Create mock objects to prevent null reference errors
